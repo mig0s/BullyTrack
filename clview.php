@@ -16,6 +16,14 @@ while ($getgrades->fetch()) {
 }
 $getgrades->close();
 
+$getcoursename = $mysqli->prepare("SELECT course_name from course where course_code = '$code'");
+$getcoursename->execute();
+$getcoursename->bind_result($name);
+while ($getcoursename->fetch()) {
+	$name = $name;
+}
+$getcoursename->close();
+
 $a_cw1 = array(0,0,0,0,0,0,0,0,0,0);
 $a_cw2 = array(0,0,0,0,0,0,0,0,0,0);
 $a_cw3 = array(0,0,0,0,0,0,0,0,0,0);
@@ -35,6 +43,8 @@ foreach ($grades as $gradestring => $grade) {
 	elseif ((80 <= $grade['cw1'])and($grade['cw1']<89)) {$a_cw1['8']++;}
 	elseif ((90 <= $grade['cw1'])and($grade['cw1']<101)) {$a_cw1['9']++;}
 
+$cw1grades[] = $grade['cw1'];
+
 	if ((0 <= $grade['cw2'])and($grade['cw2']<10)){$a_cw2['0']++;}
 	elseif ((10 <= $grade['cw2'])and($grade['cw2']<19)) {$a_cw2['1']++;}
 	elseif ((20 <= $grade['cw2'])and($grade['cw2']<29)) {$a_cw2['2']++;}
@@ -45,6 +55,8 @@ foreach ($grades as $gradestring => $grade) {
 	elseif ((70 <= $grade['cw2'])and($grade['cw2']<79)) {$a_cw2['7']++;}
 	elseif ((80 <= $grade['cw2'])and($grade['cw2']<89)) {$a_cw2['8']++;}
 	elseif ((90 <= $grade['cw2'])and($grade['cw2']<101)) {$a_cw2['9']++;}
+
+$cw2grades[] = $grade['cw2'];
 
 	if ((0 <= $grade['cw3'])and($grade['cw3']<10)){$a_cw3['0']++;}
 	elseif ((10 <= $grade['cw3'])and($grade['cw3']<19)) {$a_cw3['1']++;}
@@ -57,6 +69,8 @@ foreach ($grades as $gradestring => $grade) {
 	elseif ((80 <= $grade['cw3'])and($grade['cw3']<89)) {$a_cw3['8']++;}
 	elseif ((90 <= $grade['cw3'])and($grade['cw3']<101)) {$a_cw3['9']++;}
 
+$cw3grades[] = $grade['cw3'];
+
 	if ((0 <= $grade['cw4'])and($grade['cw4']<10)){$a_cw4['0']++;}
 	elseif ((10 <= $grade['cw4'])and($grade['cw4']<19)) {$a_cw4['1']++;}
 	elseif ((20 <= $grade['cw4'])and($grade['cw4']<29)) {$a_cw4['2']++;}
@@ -68,6 +82,8 @@ foreach ($grades as $gradestring => $grade) {
 	elseif ((80 <= $grade['cw4'])and($grade['cw4']<89)) {$a_cw4['8']++;}
 	elseif ((90 <= $grade['cw4'])and($grade['cw4']<101)) {$a_cw4['9']++;}
 
+$cw4grades[] = $grade['cw4'];
+
 	if ((0 <= $grade['exam'])and($grade['exam']<10)){$a_exam['0']++;}
 	elseif ((10 <= $grade['exam'])and($grade['exam']<19)) {$a_exam['1']++;}
 	elseif ((20 <= $grade['exam'])and($grade['exam']<29)) {$a_exam['2']++;}
@@ -78,7 +94,35 @@ foreach ($grades as $gradestring => $grade) {
 	elseif ((70 <= $grade['exam'])and($grade['exam']<79)) {$a_exam['7']++;}
 	elseif ((80 <= $grade['exam'])and($grade['exam']<89)) {$a_exam['8']++;}
 	elseif ((90 <= $grade['exam'])and($grade['exam']<101)) {$a_exam['9']++;}
+
+$examgrades[] = $grade['exam'];
+
 }
+
+$cw1mean = mean($cw1grades);
+$cw2mean = mean($cw2grades);
+$cw3mean = mean($cw3grades);
+$cw4mean = mean($cw4grades);
+$exammean = mean($examgrades);
+
+$overall_grades = array($cw1mean, $cw2mean, $cw3mean, $cw4mean, $exammean);
+
+$overallmean = mean($overall_grades);
+
+$cw1median = median($cw1grades);
+$cw2median = median($cw2grades);
+$cw3median = median($cw3grades);
+$cw4median = median($cw4grades);
+$exammedian = median($examgrades);
+$overallmedian = median($overall_grades);
+
+$cw1dev = standard_deviation($cw1grades);
+$cw2dev = standard_deviation($cw2grades);
+$cw3dev = standard_deviation($cw3grades);
+$cw4dev = standard_deviation($cw4grades);
+$examdev = standard_deviation($examgrades);
+$overalldev = standard_deviation($overall_grades);
+
 
 $tier0 = array($a_cw1['0'], $a_cw2['0'], $a_cw3['0'], $a_cw4['0'], $a_exam['0']);
 $tier1 = array($a_cw1['1'], $a_cw2['1'], $a_cw3['1'], $a_cw4['1'], $a_exam['1']);
@@ -103,12 +147,28 @@ $overall['7'] = array_sum($tier7);
 $overall['8'] = array_sum($tier8);
 $overall['9'] = array_sum($tier9);
 
+$stcount = count($grades);
+
 echo "
 </div>
 	<div id='main' class='col-md-10'>";
 	echo resultBlock($errors,$successes);
 	echo "
-		<div id='regbox'><h1>My reports:</h1>
+		<div id='regbox'><h1>Course Monitoring Report</h1>
+		<table class='table table-bordered'>
+		<tr><td>Academic Session:</td><td>$year</td></tr>
+		<tr><td>Course Code:</td><td>$code</td></tr>
+		<tr><td>Course Title:</td><td>$name</td></tr>
+		<tr><td>Course Leader:</td><td>$loggedInUser->displayname</td></tr>
+		<tr><td>Student Count:</td><td>$stcount</td></tr>
+		</table>
+		<table class='table table-bordered'>
+		<thead><th colspan='7'>STATISTICS</th></thead>
+		<tr><td></td><td>CW1</td><td>CW2</td><td>CW3</td><td>CW4</td><td>EXAM</td><td>OVERALL</td></tr>
+		<tr><td>Mean</td><td>$cw1mean</td><td>$cw2mean</td><td>$cw3mean</td><td>$cw4mean</td><td>$exammean</td><td>$overallmean</td></tr>
+		<tr><td>Median</td><td>$cw1median</td><td>$cw2median</td><td>$cw3median</td><td>$cw4median</td><td>$exammedian</td><td>$overallmedian</td></tr>
+		<tr><td>Standard<br />Deviation</td><td>$cw1dev</td><td>$cw2dev</td><td>$cw3dev</td><td>$cw4dev</td><td>$examdev</td><td>$overalldev</td></tr>
+		</table>
 		<table class='table table-hover table-condensed table-cmr'><thead>
 			<tr><th class='cmrtop'></th><th>0 - 9</th><th>10 - 19</th><th>20 - 29</th><th>30 - 39</th><th>40 - 49</th><th>50 - 59</th><th>60 - 69</th><th>70 - 79</th><th>80 - 89</th><th>90 +</th></tr></thead><tbody><tr><td>CW1</td>";
 		foreach ($a_cw1 as $gradecount) {echo "<td>$gradecount</td>";}

@@ -8,6 +8,10 @@ require_once("models/header.php");
 $code = $_POST['course_code'];
 $year = $_POST['ayear'];
 
+if (isset($_POST['submit'])) {
+	$successes[]=lang("CMR_ADDED");
+}
+
 $getgrades = $mysqli->prepare("SELECT  cw1, cw2, cw3, cw4, exam from gradestring where course_code='$code' and year(`timestamp`)=$year;");
 $getgrades->execute();
 $getgrades->bind_result($cw1, $cw2, $cw3, $cw4, $exam);
@@ -153,8 +157,11 @@ echo "
 </div>
 	<div id='main' class='col-md-10'>";
 	echo resultBlock($errors,$successes);
-	echo "
-		<div id='regbox'><h1>Course Monitoring Report</h1>
+	echo "<div id='regbox'>"; 
+
+ob_start();
+
+		echo"<h1>Course Monitoring Report</h1>
 		<table class='table table-bordered'>
 		<tr><td>Academic Session:</td><td>$year</td></tr>
 		<tr><td>Course Code:</td><td>$code</td></tr>
@@ -183,8 +190,33 @@ echo "
 	echo"</tr><tr><td>OVERALL</td>";
 		foreach ($overall as $gradecount) {echo "<td>$gradecount</td>";}
 
-echo"</tr></tbody></table>
+echo"</tr></tbody></table>";
+
+$content = ob_get_contents();
+$content = addslashes($content);
+
+if (isset($_POST['submit'])) {
+	$today = date("Y-m-d");
+	$addcmr = $mysqli->prepare("INSERT INTO cmr (`cl_name`, `course_code`, `cmr_timestamp`, `cmr_content`) VALUES ('$loggedInUser->displayname', '$code', '$today', '$content');");
+	$addcmr->execute();
+	$addcmr->close();
+}
+
+echo"<form class='form-horizontal' action='".$_SERVER['PHP_SELF']."' method='post'>
+		<fieldset>
+		<!-- Textarea -->
+			<input type='hidden' name='course_code' value='".$code."' />
+			<input type='hidden' name='ayear' value='".$year."' />
+		<!-- Button -->
+		<div class='form-group'>
+		  <div class='col-md-4'>
+		    <button id='submit' name='submit' class='btn btn-success'>Submit for approval</button>
+		  </div>
 		</div>
+
+		</fieldset>
+		</form>
+	</div>
 	</div>
 </div>
 <div id='bottom'></div>

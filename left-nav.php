@@ -33,7 +33,7 @@ if(isUserLoggedIn()) {
 	echo "
 	<ul>
 	<li><b>CL menu:</b></li>
-	<li><a href='clview.php'>My CMRs</a></li>
+	<li><a href='cllist.php'>My CMRs</a></li>
 	<li><a href='create_cmr.php'>Create CMR</a></li>
 	</ul>";
 	}

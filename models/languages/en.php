@@ -117,7 +117,7 @@ $lang = array_merge($lang,array(
 
 //CMR
 $lang = array_merge($lang,array(
-	"CMR_ADDED"				=> "Course Monitoring Report successfully added!",
+	"CMR_ADDED"				=> "Course Monitoring Report successfully submitted!<br /> Please, do not resubmit it again!",
 	"GRADES_RECORDED"		=> "Grades successfully recorded!",
 	"WRONG_DATA"			=> "Wrong data type!",
 	"NO_COURSES"			=> "There is no courses assigned to you!",

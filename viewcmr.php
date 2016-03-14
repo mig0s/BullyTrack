@@ -100,6 +100,20 @@ echo "
 				</div>
 			</fieldset></form>";
 	}
+	if ($loggedInUser->checkPermission(array(3))){
+	$getdltc =$mysqli->prepare("SELECT dlt_comment from cmr where `cmr_id`='$id';");
+	$getdltc->execute();
+	$getdltc->bind_result($dltc);
+	while ($getdltc->fetch()) {
+		if (is_null($dltc)) {
+			$dltc = 'DLT comment is not available';
+		}
+		$dltc = $dltc;
+	}
+	$getdltc->close();
+	echo "<label class='col-md-12' for='comment'>DLT Comment:</label>
+	<div class='col-md-12'><textarea disabled class='form-control' id='dltcomment' name='dltcomment' rows='5'>$dltc</textarea></div>";
+	}
 echo"	</div>
 	</div>
 </div>

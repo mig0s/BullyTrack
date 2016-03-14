@@ -127,5 +127,7 @@ $lang = array_merge($lang,array(
 	"COURSE_DELETIONS_SUCCESSFUL" => "Successfully deleted %m1% courses!",
 	"COURSE_UPDATED"		=> "Course updated successfully!",
 	"COURSE_ADDED"			=> "Course successfully added!",
+	"APPROVED"				=> "CMR successfully approved!",
+	"DECLINED"				=> "CMR declined!",
 	));
 ?>

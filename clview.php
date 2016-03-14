@@ -20,11 +20,12 @@ while ($getgrades->fetch()) {
 }
 $getgrades->close();
 
-$getcoursename = $mysqli->prepare("SELECT course_name from course where course_code = '$code'");
+$getcoursename = $mysqli->prepare("SELECT course_name, cm_name from course where course_code = '$code'");
 $getcoursename->execute();
-$getcoursename->bind_result($name);
+$getcoursename->bind_result($name, $cm);
 while ($getcoursename->fetch()) {
 	$name = $name;
+	$cm = $cm;
 }
 $getcoursename->close();
 
@@ -199,7 +200,7 @@ if (isset($_POST['send'])) {
 	$today = date("Y-m-d");
 	$comment = $_POST['comment'];
 	$actions = $_POST['actions'];
-	$addcmr = $mysqli->prepare("INSERT INTO cmr (`cl_name`, `course_code`, `cmr_timestamp`, `cmr_content`, `comment`, `actions`) VALUES ('$loggedInUser->displayname', '$code', '$today', '$content', '$comment', '$actions');");
+	$addcmr = $mysqli->prepare("INSERT INTO cmr (`cl_name`, `course_code`, `cmr_timestamp`, `cmr_content`, `comment`, `actions`,`status`,`cm_name`) VALUES ('$loggedInUser->displayname', '$code', '$today', '$content', '$comment', '$actions','pending','$cm');");
 	$addcmr->execute();
 	$addcmr->close();
 }

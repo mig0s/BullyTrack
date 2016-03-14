@@ -41,7 +41,7 @@ if(isUserLoggedIn()) {
 	echo "
 	<ul>
 	<li><b>CM menu:</b></li>
-	<li><a href='clview.php'>My CMRs</a></li>
+	<li><a href='cmlist.php'>My CMRs</a></li>
 	</ul>";
 	}
 	if ($loggedInUser->checkPermission(array(6))){

@@ -239,7 +239,7 @@ echo"<form class='form-horizontal' action='".$_SERVER['PHP_SELF']."' method='pos
 		<!-- Button -->
 		<div class='form-group'>
 		  <label class='col-md-2' for='send'></label>
-		  <div class='col-md-4'>
+		  <div class='col-md-4'><br />
 		    <button id='send' name='send' class='btn btn-success'>Submit for approval</button>
 		  </div>
 		</div>

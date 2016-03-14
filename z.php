@@ -10,8 +10,6 @@ echo "
 </div>
 	<div id='main' class='col-md-10'>";
 	echo resultBlock($errors,$successes);
-	echo "
-		<div id='regbox'><h1>My reports:</h1>";
 
 echo"	</div>
 	</div>

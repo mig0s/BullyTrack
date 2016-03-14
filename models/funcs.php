@@ -1280,4 +1280,17 @@ function standard_deviation($array){
 	}
 }
 
+function deleteStudents($students) {
+	global $mysqli,$db_table_prefix; 
+	$i = 0;
+	$stmt = $mysqli->prepare("DELETE FROM student_particular WHERE student_id = ?");
+	foreach($students as $id){
+		$stmt->bind_param("i", $id);
+		$stmt->execute();
+		$i++;
+	}
+	$stmt->close();
+	return $i;
+}
+
 ?>

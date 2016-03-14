@@ -131,5 +131,7 @@ $lang = array_merge($lang,array(
 	"DECLINED"				=> "CMR declined!",
 	"DLT_COMMENT"			=> "Comment added successfully!",
 	"DLT_EXPIRED"			=> "Sorry, the CMR you are trying to comment is expired",
+	"STUDENT_ADDED"			=> "Student successfully added!",
+	"STUDENT_DELETIONS_SUCCESSFUL" => "Successfully deleted %m1% student(s)!",
 	));
 ?>

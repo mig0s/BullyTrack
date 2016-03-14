@@ -19,6 +19,7 @@ if(isUserLoggedIn()) {
 	<li><a href='admin_users.php'>Manage Users</a></li>
 	<li><a href='admin_permissions.php'>Manage Permissions</a></li>
 	<li><a href='admin_pages.php'>Manage Pages</a></li>
+	<li><a href='admin_st_list.php'>Manage Students</a></li>
 	<li><a href='report.php'>Report</a></li>
 	</ul>";
 	}

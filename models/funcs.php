@@ -1254,6 +1254,7 @@ function mean($array) {
 	$count = count($array);
 	$sum = array_sum($array);
 	$mean = $sum / $count;
+	$mean = round($mean, 2);
 	return $mean;
 }
 
@@ -1261,6 +1262,7 @@ function median($array) {
 	rsort($array);
     $middle = round(count($array) / 2);
     $median = $array[$middle-1];
+    $median = round($median, 2);
     return $median;
 }
 
@@ -1268,9 +1270,13 @@ function standard_deviation($array){
 	if(is_array($array)){
 		$mean = array_sum($array) / count($array);
 		foreach($array as $key => $num) $devs[$key] = pow($num - $mean, 2);
-		$sd = sqrt(array_sum($devs) / (count($devs) - 1));
-		$sd = round($sd, 2);
-		return $sd;
+		if ((count($devs) - 1) > 0) {
+			$sd = sqrt(array_sum($devs) / (count($devs) - 1));
+			$sd = round($sd, 2);
+			return $sd;
+		} else {
+			return 0;
+		}
 	}
 }
 

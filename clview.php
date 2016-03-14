@@ -8,7 +8,7 @@ require_once("models/header.php");
 $code = $_POST['course_code'];
 $year = $_POST['ayear'];
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['send'])) {
 	$successes[]=lang("CMR_ADDED");
 }
 
@@ -195,9 +195,11 @@ echo"</tr></tbody></table>";
 $content = ob_get_contents();
 $content = addslashes($content);
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['send'])) {
 	$today = date("Y-m-d");
-	$addcmr = $mysqli->prepare("INSERT INTO cmr (`cl_name`, `course_code`, `cmr_timestamp`, `cmr_content`) VALUES ('$loggedInUser->displayname', '$code', '$today', '$content');");
+	$comment = $_POST['comment'];
+	$actions = $_POST['actions'];
+	$addcmr = $mysqli->prepare("INSERT INTO cmr (`cl_name`, `course_code`, `cmr_timestamp`, `cmr_content`, `comment`, `actions`) VALUES ('$loggedInUser->displayname', '$code', '$today', '$content', '$comment', '$actions');");
 	$addcmr->execute();
 	$addcmr->close();
 }
@@ -207,10 +209,38 @@ echo"<form class='form-horizontal' action='".$_SERVER['PHP_SELF']."' method='pos
 		<!-- Textarea -->
 			<input type='hidden' name='course_code' value='".$code."' />
 			<input type='hidden' name='ayear' value='".$year."' />
+
+		<div>
+			<h4>When you complete this section, at a minimum, you should address the following:</h4>
+			<ol>
+			<li>The overview of the Course Leader (to include comments on available statistics, the range of marks,<br />assessment diet and any issues affecting the delivery of the course this year).</li>
+			<li>Student Evaluation and Feedback.</li>
+			<li>Comments of the External Examiner.</li>
+			<li>A review of the previous year’s action plan.</li>
+			</ol>
+		</div>
+
+		<div class='form-group'>
+		  <label class='col-md-12' for='comment'>General comment:</label>
+		  <label class='col-md-2' for='comment'></label>
+		  <div class='col-md-8'>                     
+		    <textarea class='form-control' id='comment' name='comment' rows='10'></textarea>
+		  </div>
+		</div>
+
+		<div class='form-group'>
+		  <label class='col-md-12' for='actions'>Actions to be taken:</label>
+		  <label class='col-md-2' for='actions'></label>
+		  <div class='col-md-8'>                     
+		    <textarea class='form-control' id='actions' name='actions' rows='10'></textarea>
+		  </div>
+		</div>
+
 		<!-- Button -->
 		<div class='form-group'>
+		  <label class='col-md-2' for='send'></label>
 		  <div class='col-md-4'>
-		    <button id='submit' name='submit' class='btn btn-success'>Submit for approval</button>
+		    <button id='send' name='send' class='btn btn-success'>Submit for approval</button>
 		  </div>
 		</div>
 

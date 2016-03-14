@@ -37,7 +37,7 @@ echo "
 		    <select id='course_code' name='course_code' class='form-control'>
 		      <option value=''>- select course -</option>";
 		      foreach ($courses as $course) {
-		      	echo "<option value='".$course['course_code']."'>".$course['course_name']."</option>";
+		      	echo "<option value='".$course['course_code']."'>".$course['course_code']." - ".$course['course_name']."</option>";
 		      }
 		echo "</select>
 		  </div>

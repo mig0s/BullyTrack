@@ -129,5 +129,7 @@ $lang = array_merge($lang,array(
 	"COURSE_ADDED"			=> "Course successfully added!",
 	"APPROVED"				=> "CMR successfully approved!",
 	"DECLINED"				=> "CMR declined!",
+	"DLT_COMMENT"			=> "Comment added successfully!",
+	"DLT_EXPIRED"			=> "Sorry, the CMR you are trying to comment is expired",
 	));
 ?>

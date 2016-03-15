@@ -1250,6 +1250,32 @@ function deleteCourses($courses) {
 	return $i;
 }
 
+function resignFromCourses($courses) {
+	global $mysqli,$db_table_prefix; 
+	$i = 0;
+	$stmt = $mysqli->prepare("DELETE FROM student_courses WHERE courses_id = ?");
+	foreach($courses as $code){
+		$stmt->bind_param("s", $code);
+		$stmt->execute();
+		$i++;
+	}
+	$stmt->close();
+	return $i;
+}
+
+function enrollToCourses($courses, $stid) {
+	global $mysqli,$db_table_prefix; 
+	$i = 0;
+	$stmt = $mysqli->prepare("INSERT INTO student_courses (`student_id`, `course_code`) VALUES (?, ?);");
+	foreach($courses as $code){
+		$stmt->bind_param("ss", $stid, $code);
+		$stmt->execute();
+		$i++;
+	}
+	$stmt->close();
+	return $i;
+}
+
 function mean($array) {
 	$count = count($array);
 	$sum = array_sum($array);

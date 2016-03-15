@@ -121,10 +121,10 @@ $lang = array_merge($lang,array(
 	"GRADES_RECORDED"		=> "Grades successfully recorded!",
 	"WRONG_DATA"			=> "Wrong data type!",
 	"NO_COURSES"			=> "There is no courses assigned to you!",
-	"FACULTY_DELETIONS_SUCCESSFUL" => "Successfully deleted %m1% faculties!",
+	"FACULTY_DELETIONS_SUCCESSFUL" => "Successfully deleted %m1% facultie(s)!",
 	"FACULTY_UPDATED"		=> "Faculty updated successfully!",
 	"FACULTY_ADDED"			=> "Faculty successfully added!",
-	"COURSE_DELETIONS_SUCCESSFUL" => "Successfully deleted %m1% courses!",
+	"COURSE_DELETIONS_SUCCESSFUL" => "Successfully deleted %m1% course(s)!",
 	"COURSE_UPDATED"		=> "Course updated successfully!",
 	"COURSE_ADDED"			=> "Course successfully added!",
 	"APPROVED"				=> "CMR successfully approved!",
@@ -133,5 +133,7 @@ $lang = array_merge($lang,array(
 	"DLT_EXPIRED"			=> "Sorry, the CMR you are trying to comment is expired",
 	"STUDENT_ADDED"			=> "Student successfully added!",
 	"STUDENT_DELETIONS_SUCCESSFUL" => "Successfully deleted %m1% student(s)!",
+	"ENROLLED"				=> "Successfully enrolled to %m1% course(s)!",
+	"RESIGNED"				=> "Successfully resigned from %m1% course(s)!"
 	));
 ?>

@@ -78,8 +78,10 @@ else if(isset($_COOKIE["userCakeUser"]))
 }
 else 
 {
+    $plen = parseLength($remember_me_length);
+    $timo = time();
     $stmt = $mysqli->prepare("DELETE FROM ".$db_table_prefix."sessions WHERE ? >= (`sessionStart` + ?)");
-    $stmt->bind_param("ii", time(), parseLength($remember_me_length));
+    $stmt->bind_param("ii", $timo, $plen);
     $stmt->execute();
     $stmt->close();
     

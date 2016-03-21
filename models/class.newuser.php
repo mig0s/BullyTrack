@@ -149,11 +149,6 @@ class User
 				$stmt->bind_param("s", $inserted_id);
 				$stmt->execute();
 				$stmt->close();
-
-				$stmt = $mysqli->prepare("INSERT INTO board (userid) VALUES (?)");
-				$stmt->bind_param("s", $inserted_id);
-				$stmt->execute();
-				$stmt->close();
 			}
 		}
 	}

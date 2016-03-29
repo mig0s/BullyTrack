@@ -38,11 +38,11 @@ $a_exam = array();
 
 foreach ($grades as $gradestring => $grade) {
 
-	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw1'])and($grade['cw1']<$i*10+10)){$a_cw1[$i]++;}else{$a_cw1[$i]=0;}}
-	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw2'])and($grade['cw2']<$i*10+10)){$a_cw2[$i]++;}else{$a_cw2[$i]=0;}}
-	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw3'])and($grade['cw3']<$i*10+10)){$a_cw3[$i]++;}else{$a_cw3[$i]=0;}}
-	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw4'])and($grade['cw4']<$i*10+10)){$a_cw4[$i]++;}else{$a_cw4[$i]=0;}}
-	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['exam'])and($grade['exam']<$i*10+10)){$a_exam[$i]++;}else{$a_exam[$i]=0;}}
+	for ($i=0; $i < 10; $i++) {{$a_cw1[$i]=0;} if (($i*10 <= $grade['cw1'])and($grade['cw1']<$i*10+10)){$a_cw1[$i]++;}}
+	for ($i=0; $i < 10; $i++) {{$a_cw2[$i]=0;} if (($i*10 <= $grade['cw2'])and($grade['cw2']<$i*10+10)){$a_cw2[$i]++;}}
+	for ($i=0; $i < 10; $i++) {{$a_cw3[$i]=0;} if (($i*10 <= $grade['cw3'])and($grade['cw3']<$i*10+10)){$a_cw3[$i]++;}}
+	for ($i=0; $i < 10; $i++) {{$a_cw4[$i]=0;} if (($i*10 <= $grade['cw4'])and($grade['cw4']<$i*10+10)){$a_cw4[$i]++;}}
+	for ($i=0; $i < 10; $i++) {{$a_exam[$i]=0;} if (($i*10 <= $grade['exam'])and($grade['exam']<$i*10+10)){$a_exam[$i]++;}}
 
 	$cw1grades[] = $grade['cw1'];
 	$cw2grades[] = $grade['cw2'];

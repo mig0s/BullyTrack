@@ -20,41 +20,35 @@ while ($getgrades->fetch()) {
 }
 $getgrades->close();
 
-$getcoursename = $mysqli->prepare("SELECT course_name, cm_name from course where course_code = '$code'");
+$getcoursename = $mysqli->prepare("SELECT course_name, cm_name, cl_name from course where course_code = '$code'");
 $getcoursename->execute();
-$getcoursename->bind_result($name, $cm);
+$getcoursename->bind_result($name, $cm, $cl);
 while ($getcoursename->fetch()) {
 	$name = $name;
 	$cm = $cm;
+	$cl = $cl;
 }
 $getcoursename->close();
 
-$a_cw1 = array(0,0,0,0,0,0,0,0,0,0);
-$a_cw2 = array(0,0,0,0,0,0,0,0,0,0);
-$a_cw3 = array(0,0,0,0,0,0,0,0,0,0);
-$a_cw4 = array(0,0,0,0,0,0,0,0,0,0);
-$a_exam = array(0,0,0,0,0,0,0,0,0,0);
+$a_cw1 = array();
+$a_cw2 = array();
+$a_cw3 = array();
+$a_cw4 = array();
+$a_exam = array();
 
 foreach ($grades as $gradestring => $grade) {
-for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw1'])and($grade['cw1']<$i*10+10)){$a_cw1[$i]++;}}
 
-$cw1grades[] = $grade['cw1'];
+	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw1'])and($grade['cw1']<$i*10+10)){$a_cw1[$i]++;}else{$a_cw1[$i]=0;}}
+	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw2'])and($grade['cw2']<$i*10+10)){$a_cw2[$i]++;}else{$a_cw2[$i]=0;}}
+	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw3'])and($grade['cw3']<$i*10+10)){$a_cw3[$i]++;}else{$a_cw3[$i]=0;}}
+	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw4'])and($grade['cw4']<$i*10+10)){$a_cw4[$i]++;}else{$a_cw4[$i]=0;}}
+	for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['exam'])and($grade['exam']<$i*10+10)){$a_exam[$i]++;}else{$a_exam[$i]=0;}}
 
-for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw2'])and($grade['cw2']<$i*10+10)){$a_cw1[$i]++;}}
-
-$cw2grades[] = $grade['cw2'];
-
-for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw3'])and($grade['cw3']<$i*10+10)){$a_cw1[$i]++;}}
-
-$cw3grades[] = $grade['cw3'];
-
-for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['cw4'])and($grade['cw4']<$i*10+10)){$a_cw1[$i]++;}}
-
-$cw4grades[] = $grade['cw4'];
-
-for ($i=0; $i < 10; $i++) {if (($i*10 <= $grade['exam'])and($grade['exam']<$i*10+10)){$a_cw1[$i]++;}}
-
-$examgrades[] = $grade['exam'];
+	$cw1grades[] = $grade['cw1'];
+	$cw2grades[] = $grade['cw2'];
+	$cw3grades[] = $grade['cw3'];
+	$cw4grades[] = $grade['cw4'];
+	$examgrades[] = $grade['exam'];
 
 }
 
@@ -82,29 +76,9 @@ $cw4dev = standard_deviation($cw4grades);
 $examdev = standard_deviation($examgrades);
 $overalldev = standard_deviation($overall_grades);
 
+for ($i=0; $i < 10; $i++) { $tier[] = array($a_cw1[$i], $a_cw2[$i], $a_cw3[$i], $a_cw4[$i], $a_exam[$i]); }
 
-$tier0 = array($a_cw1['0'], $a_cw2['0'], $a_cw3['0'], $a_cw4['0'], $a_exam['0']);
-$tier1 = array($a_cw1['1'], $a_cw2['1'], $a_cw3['1'], $a_cw4['1'], $a_exam['1']);
-$tier2 = array($a_cw1['2'], $a_cw2['2'], $a_cw3['2'], $a_cw4['2'], $a_exam['2']);
-$tier3 = array($a_cw1['3'], $a_cw2['3'], $a_cw3['3'], $a_cw4['3'], $a_exam['3']);
-$tier4 = array($a_cw1['4'], $a_cw2['4'], $a_cw3['4'], $a_cw4['4'], $a_exam['4']);
-$tier5 = array($a_cw1['5'], $a_cw2['5'], $a_cw3['5'], $a_cw4['5'], $a_exam['5']);
-$tier6 = array($a_cw1['6'], $a_cw2['6'], $a_cw3['6'], $a_cw4['6'], $a_exam['6']);
-$tier7 = array($a_cw1['7'], $a_cw2['7'], $a_cw3['7'], $a_cw4['7'], $a_exam['7']);
-$tier8 = array($a_cw1['8'], $a_cw2['8'], $a_cw3['8'], $a_cw4['8'], $a_exam['8']);
-$tier9 = array($a_cw1['9'], $a_cw2['9'], $a_cw3['9'], $a_cw4['9'], $a_exam['9']);
-
-$overall = array(0,0,0,0,0,0,0,0,0,0);
-$overall['0'] = array_sum($tier0);
-$overall['1'] = array_sum($tier1);
-$overall['2'] = array_sum($tier2);
-$overall['3'] = array_sum($tier3);
-$overall['4'] = array_sum($tier4);
-$overall['5'] = array_sum($tier5);
-$overall['6'] = array_sum($tier6);
-$overall['7'] = array_sum($tier7);
-$overall['8'] = array_sum($tier8);
-$overall['9'] = array_sum($tier9);
+for ($i=0; $i < 10; $i++) { $overall[$i] = array_sum($tier[$i]); }
 
 $stcount = count($grades);
 
@@ -157,6 +131,22 @@ if (isset($_POST['send'])) {
 	$addcmr = $mysqli->prepare("INSERT INTO cmr (`cl_name`, `course_code`, `cmr_timestamp`, `cmr_content`, `comment`, `actions`,`status`,`cm_name`) VALUES ('$loggedInUser->displayname', '$code', '$today', '$content', '$comment', '$actions','pending','$cm');");
 	$addcmr->execute();
 	$addcmr->close();
+
+	$getcmmail = $mysqli->prepare("SELECT email from uc_users where display_name = '$cm'");
+	$getcmmail->execute();
+	$getcmmail->bind_result($to);
+	while ($getcmmail->fetch()) {
+		$to = $to;
+	}
+	$getcmmail->close();
+
+	$subject = "[BT.GA] - CMR for $code from $today";
+
+	$message = "<!DOCTYPE html><html><head><style>table{border:2px dotted grey;}</style></head><body>$content<p><h2>General Comment:</h2>$comment</p><p><h2>Actions to be taken:</h2>$actions</p></body></html>";
+
+	$headers = "From: bot@bullytrack.ga\r\nReply-To: bot@bullytrack.ga\r\nContent-type:text/html;charset=UTF-8\r\n";
+
+	$sendcmr = mail($to, $subject, $message, $headers);
 }
 
 echo"<form class='form-horizontal' action='".$_SERVER['PHP_SELF']."' method='post'>

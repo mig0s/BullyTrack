@@ -7,7 +7,7 @@ require_once("models/header.php");
 
 $getcourses = $mysqli->prepare("SELECT
 	course_code,
-	course_name FROM `bullytrack`.`course` WHERE `lecturer_name`='".$loggedInUser->displayname."'");
+	course_name FROM course WHERE `lecturer_name`='".$loggedInUser->displayname."'");
 $getcourses->execute();
 $getcourses->bind_result($course_code, $course_name);
 while ($getcourses->fetch()){

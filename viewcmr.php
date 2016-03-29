@@ -23,6 +23,27 @@ if (isset($_POST['approve'])) {
 	$decline->execute();
 	$decline->close();
 	$successes[] = lang("APPROVED");
+
+	$today = date("Y-m-d");
+
+	$subject = "[BT.GA]:Admin - CMR for $code from $today";
+
+	$message = "<!DOCTYPE html><html><head><style>table{border:2px dotted grey;}</style></head><body>".$cmr['content']."<p><h2>General Comment:</h2>".$cmr['comment']."</p><p><h2>Actions to be taken:</h2>".$cmr['actions']."</p></body></html>";
+
+	$headers = "From: bot@bullytrack.ga\r\nReply-To: bot@bullytrack.ga\r\nContent-type:text/html;charset=UTF-8\r\n";
+
+	$getemails = $mysqli->prepare("SELECT email from uc_users where id in (SELECT user_id from uc_user_permission_matches where permission_id = '3' or permission_id = '6')");
+	$getemails->execute();
+	$getemails->bind_result($email);
+	while ($getemails->fetch()) {
+		$emails[] = $email;
+	}
+	$getemails->close();
+
+	foreach ($emails as $email) {
+		$sendcmr = mail($email, $subject, $message, $headers);
+	}
+
 } elseif (isset($_POST['decline'])) {
 	$approve = $mysqli->prepare("UPDATE cmr SET `status`='declined' WHERE `cmr_id`='$id';");
 	$approve->execute();

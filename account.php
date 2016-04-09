@@ -1,18 +1,41 @@
 <?php
+function Redirect($url, $permanent = false)
+{
+    if (headers_sent() === false)
+    {
+    	header('Location: ' . $url, true, ($permanent === true) ? 301 : 302);
+    }
 
-require_once("models/config.php");
+    exit();
+}
+
 if (!securePage($_SERVER['PHP_SELF'])){die();}
-require_once("models/header.php");
-
-echo "
-</div>
-<div id='main' class='col-md-10'>
-<div id='regbox'>
-<p class='lead'>
-Welcome, $loggedInUser->displayname. You are with us since " . date("M d, Y", $loggedInUser->signupTimeStamp()) . ".
-</p>
-</div><hr></div></div>
-<div id='bottom'></div>
-</div>
-</body>
-</html>";
+//Links for logged in user
+if(isUserLoggedIn()) {
+	//Links for permission level 2 (default admin)
+	if ($loggedInUser->checkPermission(array(2))){
+		Redirect('report.php', false);
+	}
+	if ($loggedInUser->checkPermission(array(3))){
+		Redirect('allcmrs.php', false);
+	}
+	if ($loggedInUser->checkPermission(array(4))){
+		Redirect('cllist.php', false);
+	}
+	if ($loggedInUser->checkPermission(array(5))){
+		Redirect('cmlist.php', false);
+	}
+	if ($loggedInUser->checkPermission(array(6))){
+		Redirect('allcmrs.php', false);
+	}
+	if ($loggedInUser->checkPermission(array(7))){
+		Redirect('allcmrs.php', false);
+	}
+	if ($loggedInUser->checkPermission(array(7))){
+		Redirect('courses.php', false);
+	}
+} 
+else {
+	Redirect('index.php', false);
+}
+?>

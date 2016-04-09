@@ -10,7 +10,6 @@ if(isUserLoggedIn()) {
 	<li><a href='admin_courses.php'>Courses</a></li>
 	<li><a href='admin_faculties.php'>Faculties</a></li>
 	<li><a href='admin_users.php'>Users</a></li>
-	<li><a href='admin_permissions.php'>Permissions</a></li>
 	<li><a href='admin_pages.php'>Pages</a></li>
 	<li><a href='admin_st_list.php'>Students</a></li>
 	<li><a href='report.php'>Report</a></li>

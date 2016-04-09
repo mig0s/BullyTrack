@@ -21,19 +21,19 @@ if(!empty($_POST))
 
 	if (isset($grades) && !is_null($grades)) {
 
-		$cw1 = trim($_POST["cw1"]);
-		$cw2 = trim($_POST["cw2"]);
-		$cw3 = trim($_POST["cw3"]);
-		$cw4 = trim($_POST["cw4"]);
-		$exam = trim($_POST["exam"]);
-		$ccode = trim($_POST["ccode"]);
-		$stid = trim($_POST["stid"]);
+		$cw1 = htmlspecialchars(stripcslashes(trim($_POST["cw1"])));
+		$cw2 = htmlspecialchars(stripcslashes(trim($_POST["cw2"])));
+		$cw3 = htmlspecialchars(stripcslashes(trim($_POST["cw3"])));
+		$cw4 = htmlspecialchars(stripcslashes(trim($_POST["cw4"])));
+		$exam = htmlspecialchars(stripcslashes(trim($_POST["exam"])));
+		$ccode = htmlspecialchars(stripcslashes(trim($_POST["ccode"])));
+		$stid = htmlspecialchars(stripcslashes(trim($_POST["stid"])));
 
 		$today = date("Y-m-d");
 
 		if (!is_numeric($cw1) or !is_numeric($cw2) or !is_numeric($cw3) or !is_numeric($cw4) or !is_numeric($exam)) {
 			$errors[] = lang("WRONG_DATA");
-		} else {
+		} elseif ($cw1>0 and $cw1<101 and $cw2>0 and $cw2<101 and $cw3>0 and $cw3<101 and $cw4>0 and $cw4<101 and $exam>0 and $exam<101){
 
 		$updaterecord = $mysqli->prepare("UPDATE `gradestring` SET `cw1`='$cw1', `cw2`='$cw2', `cw3`='$cw3', `cw4`='$cw4', `exam`='$exam', `timestamp`='$today' WHERE course_code = '$ccode' and student_id = '$stid';");
 		$updaterecord->execute();
@@ -41,28 +41,32 @@ if(!empty($_POST))
 
 		$successes[] = lang("GRADES_RECORDED");
 
+		} else {
+			$errors[] = lang("WRONG_DATA");
 		}
 
 	} else {
 		
-		$cw1 = trim($_POST["cw1"]);
-		$cw2 = trim($_POST["cw2"]);
-		$cw3 = trim($_POST["cw3"]);
-		$cw4 = trim($_POST["cw4"]);
-		$exam = trim($_POST["exam"]);
-		$ccode = trim($_POST["ccode"]);
-		$stid = trim($_POST["stid"]);
+		$cw1 = htmlspecialchars(stripcslashes(trim($_POST["cw1"])));
+		$cw2 = htmlspecialchars(stripcslashes(trim($_POST["cw2"])));
+		$cw3 = htmlspecialchars(stripcslashes(trim($_POST["cw3"])));
+		$cw4 = htmlspecialchars(stripcslashes(trim($_POST["cw4"])));
+		$exam = htmlspecialchars(stripcslashes(trim($_POST["exam"])));
+		$ccode = htmlspecialchars(stripcslashes(trim($_POST["ccode"])));
+		$stid = htmlspecialchars(stripcslashes(trim($_POST["stid"])));
 
 		$today = date("Y-m-d");
 
 		if (!is_numeric($cw1) or !is_numeric($cw2) or !is_numeric($cw3) or !is_numeric($cw4) or !is_numeric($exam)) {
 			$errors[] = lang("WRONG_DATA");
-		} else {
+		}  elseif ($cw1>0 and $cw1<101 and $cw2>0 and $cw2<101 and $cw3>0 and $cw3<101 and $cw4>0 and $cw4<101 and $exam>0 and $exam<101) {
 
 		$createrecord = $mysqli->prepare("INSERT INTO `gradestring` (`course_code`, `student_id`, `cw1`, `cw2`, `cw3`, `cw4`, `exam`,`timestamp`) VALUES ('$ccode', '$stid', '$cw1', '$cw2', '$cw3', '$cw4', '$exam','$today');");
 		$createrecord->execute();
 		$createrecord->close();
 		$successes[] = lang("GRADES_RECORDED");
+		} else {
+			$errors[] = lang("WRONG_DATA");
 		}
 
 	}

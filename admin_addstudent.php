@@ -5,20 +5,28 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 require_once("models/header.php");
 
 if (isset($_POST['st_name']) and isset($_POST['day']) and isset($_POST['month']) and isset($_POST['year']) and isset($_POST['st_gender']) and isset($_POST['st_nation'])) {
-  $st_name = trim($_POST['st_name']);
-  $day = trim($_POST['day']);
-  $month = trim($_POST['month']);
-  $year = trim($_POST['year']);
-  $st_dob = ''.$year.'-'.$month.'-'.$day.'';
+  $st_name = htmlspecialchars(stripcslashes(trim($_POST['st_name'])));
+  $day = htmlspecialchars(stripcslashes(trim($_POST['day'])));
+  $month = htmlspecialchars(stripcslashes(trim($_POST['month'])));
+  $year = htmlspecialchars(stripcslashes(trim($_POST['year'])));
 
-  $st_gender = trim($_POST['st_gender']);
-  $st_nation = trim($_POST['st_nation']);
-  $st_disability = trim($_POST['st_disability']);
+  $st_gender = htmlspecialchars(stripcslashes(trim($_POST['st_gender'])));
+  $st_nation = htmlspecialchars(stripcslashes(trim($_POST['st_nation'])));
+  $st_disability = htmlspecialchars(stripcslashes(trim($_POST['st_disability'])));
+
+if (checkdate($month, $day, $year)) {
+
+  $st_dob = ''.$year.'-'.$month.'-'.$day.'';
 
   $addstudent = $mysqli->prepare("INSERT INTO student_particular (`student_name`, `student_dob`, `student_gender`, `student_nationality`, `student_disability`) VALUES ('$st_name', '$st_dob', '$st_gender', '$st_nation', '$st_disability');");
   $addstudent->execute();
   $addstudent->close();
   $successes[] = lang("STUDENT_ADDED");
+  } else {
+    $errors[] = lang("WRONG_DATE");
+  }
+} elseif (!empty($_POST)) {
+  $errors[] = lang("WRONG_DATA");
 }
 
 echo "

@@ -6,17 +6,19 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 require_once("models/header.php");
 
 if (!empty($_POST)) {
-	$course_code = trim($_POST['course_code']);
-	$course_name = trim($_POST['course_name']);
-	$lecturer_name = trim($_POST['lecturer_name']);
-	$cl_name = trim($_POST['cl_name']);
-	$cm_name = trim($_POST['cm_name']);
-	$faculty_id = trim($_POST['faculty_id']);
-	if (!empty($lecturer_name) and !empty($cl_name) and !empty($cm_name) and !empty($faculty_id)) {
+	$course_code = htmlspecialchars(stripcslashes(trim($_POST['course_code'])));
+	$course_name = htmlspecialchars(stripcslashes(trim($_POST['course_name'])));
+	$lecturer_name = htmlspecialchars(stripcslashes(trim($_POST['lecturer_name'])));
+	$cl_name = htmlspecialchars(stripcslashes(trim($_POST['cl_name'])));
+	$cm_name = htmlspecialchars(stripcslashes(trim($_POST['cm_name'])));
+	$faculty_id = htmlspecialchars(stripcslashes(trim($_POST['faculty_id'])));
+	if (!empty($lecturer_name) and !empty($cl_name) and !empty($cm_name) and !empty($faculty_id) and !empty($course_code) and strlen($course_code)<7 and !empty($course_name)) {
 	$addcourse = $mysqli->prepare("INSERT into course (course_code, lecturer_name, cl_name, cm_name, course_name, faculty_id) values ('$course_code', '$lecturer_name', '$cl_name', '$cm_name', '$course_name', '$faculty_id');");
 	$addcourse->execute();
 	$addcourse->close();
 	$successes[] = lang("COURSE_ADDED");
+	} else {
+		$errors[] = lang("WRONG_DATA");
 	}
 }
 

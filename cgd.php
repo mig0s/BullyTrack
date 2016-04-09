@@ -35,7 +35,7 @@ if(!empty($_POST))
 			$errors[] = lang("WRONG_DATA");
 		} else {
 
-		$updaterecord = $mysqli->prepare("UPDATE `bullytrack`.`gradestring` SET `cw1`='$cw1', `cw2`='$cw2', `cw3`='$cw3', `cw4`='$cw4', `exam`='$exam', `timestamp`='$today' WHERE course_code = '$ccode' and student_id = '$stid';");
+		$updaterecord = $mysqli->prepare("UPDATE `gradestring` SET `cw1`='$cw1', `cw2`='$cw2', `cw3`='$cw3', `cw4`='$cw4', `exam`='$exam', `timestamp`='$today' WHERE course_code = '$ccode' and student_id = '$stid';");
 		$updaterecord->execute();
 		$updaterecord->close();
 
@@ -59,7 +59,7 @@ if(!empty($_POST))
 			$errors[] = lang("WRONG_DATA");
 		} else {
 
-		$createrecord = $mysqli->prepare("INSERT INTO `bullytrack`.`gradestring` (`course_code`, `student_id`, `cw1`, `cw2`, `cw3`, `cw4`, `exam`,`timestamp`) VALUES ('$ccode', '$stid', '$cw1', '$cw2', '$cw3', '$cw4', '$exam','$today');");
+		$createrecord = $mysqli->prepare("INSERT INTO `gradestring` (`course_code`, `student_id`, `cw1`, `cw2`, `cw3`, `cw4`, `exam`,`timestamp`) VALUES ('$ccode', '$stid', '$cw1', '$cw2', '$cw3', '$cw4', '$exam','$today');");
 		$createrecord->execute();
 		$createrecord->close();
 		$successes[] = lang("GRADES_RECORDED");

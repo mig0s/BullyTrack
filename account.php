@@ -8,6 +8,7 @@ function Redirect($url, $permanent = false)
 
     exit();
 }
+require_once("models/config.php");
 
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 //Links for logged in user

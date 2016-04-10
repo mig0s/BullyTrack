@@ -81,16 +81,63 @@ for ($i=0; $i < 10; $i++) { $tier[] = array($a_cw1[$i], $a_cw2[$i], $a_cw3[$i], 
 for ($i=0; $i < 10; $i++) { $overall[$i] = array_sum($tier[$i]); }
 
 $stcount = count($grades);
+$overall_str = "";
+foreach ($overall as $key) {
+	$overall_str .= "$key, ";
+}
 
 echo "
 </div>
 	<div id='main' class='col-md-10'>";
 	echo resultBlock($errors,$successes);
-	echo "<div id='regbox'>"; 
+	echo "<div id='regbox'>";
 
 ob_start();
 
-		echo"<h1>Course Monitoring Report</h1>
+		echo"<h1>Course Monitoring Report</h1><script type='text/javascript' src='chart/Chart.js'></script><h3>Number of students who achieved a certain grade:</h3><canvas id='myChart' width='600' height='200'></canvas><br /><br /><h3>Courseworks / Exam means:</h3><canvas id='myChart1' width='600' height='200'></canvas><br /><br />
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var data = {
+    labels: ['0 - 9', '10 - 19', '20 - 29', '30 - 39', '40 - 49', '50 - 59', '60 - 69', '70 - 79', '80 - 89', '90 +'],
+    datasets: [
+        {
+            label: 'My First dataset',
+            fillColor: 'rgba(220,220,220,0.2)',
+            strokeColor: 'rgba(220,220,220,1)',
+            pointColor: 'rgba(220,220,220,1)',
+            pointStrokeColor: '#fff',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data: [$overall_str]
+        }
+    ]
+};
+var myLineChart = new Chart(ctx).Line(data, {scaleFontColor: '#fff'});
+
+var ctx = document.getElementById('myChart1').getContext('2d');
+var data = {
+    labels: ['CW1', 'CW2', 'CW3', 'CW4', 'EXAM'],
+    datasets: [
+        {
+            label: 'My First dataset',
+            fillColor: 'rgba(220,220,220,0.2)',
+            strokeColor: 'rgba(220,220,220,1)',
+            pointColor: 'rgba(220,220,220,1)',
+            pointStrokeColor: '#fff',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data: [$cw1mean, $cw2mean, $cw3mean, $cw4mean, $exammean]
+        }
+    ]
+};
+var myLineChart1 = new Chart(ctx).Line(data, {
+        scaleOverride : true,
+        scaleSteps : 10,
+        scaleStepWidth : 10,
+        scaleStartValue : 0,
+        scaleFontColor: '#fff'
+    });
+</script>
 		<table class='table table-bordered'>
 		<tr><td>Academic Session:</td><td>$year</td></tr>
 		<tr><td>Course Code:</td><td>$code</td></tr>

@@ -19,65 +19,62 @@ if(!empty($_POST))
 	}
 }
 
-$userData = fetchAllUsers(); //Fetch information for all users
-
 require_once("models/header.php");
 
-function userCount()
+function reportCount()
 {
 	echo "<h2>Statistics:</h2>";
 	GLOBAL $mysqli;
 	$sql = "SELECT count(id) as result_count FROM uc_users";
 	$result = mysqli_query($mysqli,$sql);
 	$out = mysqli_fetch_assoc($result);
-	echo "<h3>Users registered: ".$out[result_count]."</h3>";
-	$sql = "SELECT count(id) as result_count FROM usersachieves";
+	echo "<h3>Users registered: ".$out["result_count"]."</h3>";
+
+	$sql = "SELECT count(cmr_id) as result_count FROM cmr";
 	$result = mysqli_query($mysqli,$sql);
 	$out = mysqli_fetch_assoc($result);
-	echo "<h3>Achievements added: ".$out[result_count]."</h3>";
+	echo "<h3>CMRs created: ".$out["result_count"]."</h3>";
+
+	$sql = "SELECT count(faculty_id) as result_count FROM faculty";
+	$result = mysqli_query($mysqli,$sql);
+	$out = mysqli_fetch_assoc($result);
+	echo "<h3>Number of faculties: ".$out["result_count"]."</h3>";
 }
+
+$getfaculties = $mysqli->prepare("SELECT
+	faculty_id,
+	faculty_name, pvc_name, dlt_name FROM faculty");
+$getfaculties->execute();
+$getfaculties->bind_result($faculty_id, $faculty_name, $pvc_name, $dlt_name);
+while ($getfaculties->fetch()){
+	$faculties[] = array('faculty_id' => $faculty_id, 'faculty_name' => $faculty_name, 'pvc_name' => $pvc_name, 'dlt_name' => $dlt_name);
+	}
+$getfaculties->close();
 
 echo "
 </div>
 <div id='main' class='col-md-10'>";
-userCount();
+reportCount();
 echo resultBlock($errors,$successes);
 
-echo "
-<form name='adminUsers' action='".$_SERVER['PHP_SELF']."' method='post'>
-<h2>Users:</h2>
-<table class='admin'>
-<tr>
-<th>Username</th><th>Display Name</th><th>Title</th><th>Last Sign In</th>
-</tr>";
+echo "<table class='table'><thead><tr><th>ID</th><th>Faculty Name</th><th>PVC</th><th>DLT</th><th>CMRs</th><th>Responded</th></tr></thead><tbody>";
+		if (isset($faculties)) {
+			foreach ($faculties as $faculty) {
+				$sql = "SELECT count(cmr_id) as result_count FROM cmr where course_code in (SELECT course_code from course where faculty_id = '".$faculty['faculty_id']."')";
+				$result = mysqli_query($mysqli,$sql);
+				$out = mysqli_fetch_assoc($result);
 
-//Cycle through users
-foreach ($userData as $v1) {
-	echo "
-	<tr>
-	<td><a href='admin_user.php?id=".$v1['id']."'>".$v1['user_name']."</a></td>
-	<td>".$v1['display_name']."</td>
-	<td>".$v1['title']."</td>
-	<td>
-	";
-	
-	//Interprety last login
-	if ($v1['last_sign_in_stamp'] == '0'){
-		echo "Never";	
-	}
-	else {
-		echo date("j M, Y", $v1['last_sign_in_stamp']);
-	}
-	echo "
-	</td>
-	</tr>";
-}
+				$sql = "SELECT count(cmr_id) as result_count FROM cmr where comment != '' and course_code in (SELECT course_code from course where faculty_id = '".$faculty['faculty_id']."')";
+				$result = mysqli_query($mysqli,$sql);
+				$out1 = mysqli_fetch_assoc($result);
 
-echo "
-</table><br />
-<input type='submit' name='Submit' value='Delete' class='btn btn-default'/>
-</form>
-</div>
+				echo "<tr><td>".$faculty['faculty_id']."</td><td>".$faculty['faculty_name']."</td><td>".$faculty['pvc_name']."</td><td>".$faculty['dlt_name']."</td><td>".$out["result_count"]."</td><td>".$out1["result_count"]."</td></tr>";
+			}
+		}
+
+echo "</tbody></table>
+<button type='submit' name='Print' class='btn btn-default' onclick='window.print();'>Print</button>
+</div><br />&nbsp;<br />
 <div id='bottom'></div>
 </div>
 </body>

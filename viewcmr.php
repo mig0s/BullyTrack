@@ -86,8 +86,27 @@ echo "
 </div>
 	<div id='main' class='col-md-10'>";
 	echo resultBlock($errors,$successes);
-	echo "
-		<div id='regbox'>";
+	echo "<script type='text/javascript' src='chart/Chart.js'></script>
+		<div id='regbox'><canvas id='myChart' width='600' height='400'></canvas>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var data = {
+    labels: ['CW1', 'CW2', 'CW3', 'CW4', 'EXAM'],
+    datasets: [
+        {
+            label: 'My First dataset',
+            fillColor: 'rgba(220,220,220,0.2)',
+            strokeColor: 'rgba(220,220,220,1)',
+            pointColor: 'rgba(220,220,220,1)',
+            pointStrokeColor: '#fff',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data: [65, 59, 80, 81, 56, 55, 40]
+        }
+    ]
+};
+var myLineChart = new Chart(ctx).Line(data);
+</script>";
 	echo "".$cmr['content']."<br /><h3>General comment:</h3>".$cmr['comment']."<br /><h3>Actions to be taken:</h3>".$cmr['actions']."";
 	if ($loggedInUser->checkPermission(array(5))){
 	echo "<form class='form-horizontal' action='".$_SERVER['PHP_SELF']."?id=$id' method='post'>

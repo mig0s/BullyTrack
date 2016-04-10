@@ -14,6 +14,9 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 //Links for logged in user
 if(isUserLoggedIn()) {
 	//Links for permission level 2 (default admin)
+	if ($loggedInUser->checkPermission(array(1))){
+		Redirect('report.php', false);
+	}
 	if ($loggedInUser->checkPermission(array(2))){
 		Redirect('report.php', false);
 	}

@@ -177,6 +177,7 @@ if (isset($_POST['send'])) {
 	$actions = $_POST['actions'];
 	$addcmr = $mysqli->prepare("INSERT INTO cmr (`cl_name`, `course_code`, `cmr_timestamp`, `cmr_content`, `comment`, `actions`,`status`,`cm_name`) VALUES ('$loggedInUser->displayname', '$code', '$today', '$content', '$comment', '$actions','pending','$cm');");
 	$addcmr->execute();
+	$curid = $addcmr->insert_id();
 	$addcmr->close();
 
 	$getcmmail = $mysqli->prepare("SELECT email from uc_users where display_name = '$cm'");
@@ -189,7 +190,7 @@ if (isset($_POST['send'])) {
 
 	$subject = "[BT.GA] - CMR for $code from $today";
 
-	$message = "<!DOCTYPE html><html><head><style>table{border:2px dotted grey;}</style></head><body>$content<p><h2>General Comment:</h2>$comment</p><p><h2>Actions to be taken:</h2>$actions</p></body></html>";
+	$message = "<!DOCTYPE html><html><head><style>table{border:2px dotted grey;}</style></head><body>$content<p><h2>General Comment:</h2>$comment</p><p><h2>Actions to be taken:</h2>$actions</p><p><a href='http://bullytrack.ga/viewcmr?id=$curid'>View CMR in browser</a></p></body></html>";
 
 	$headers = "From: bot@bullytrack.ga\r\nReply-To: bot@bullytrack.ga\r\nContent-type:text/html;charset=UTF-8\r\n";
 

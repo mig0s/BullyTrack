@@ -79,7 +79,7 @@ function generateActivationToken($gen = null)
 	return $gen;
 }
 
-//@ Thanks to - http://phpsec.org
+//Password encryption
 function generateHash($plainText, $salt = null)
 {
 	if ($salt === null)

@@ -143,10 +143,8 @@ echo "
 						</div>
 						<div class='col-sm-8' style='text-align: right;'>
 							<h2>guest access</h2><br />
-							<p><a href='#'>approved CMRs</a></p>
-							<p><a href='#'>statistical reports</a></p>
-							<p><a href='#'>exceptional reports</a></p>
-							<p><a href='#'>about us</a></p>
+							<p>login: guest</p>
+							<p>password: 12345678</p>
 						</div>
 					</div>
 					</form>
